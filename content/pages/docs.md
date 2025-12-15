@@ -7,6 +7,8 @@ order: 0
 
 Reference documentation for setting up, customizing, and deploying this markdown site.
 
+**How publishing works:** Write posts in markdown, run `npm run sync`, and they appear on your live site immediately. No rebuild or redeploy needed. Convex handles real-time data sync, so connected browsers update automatically.
+
 ## Quick start
 
 ```bash
@@ -194,9 +196,11 @@ body {
 1. Connect GitHub repo to Netlify
 2. Build command: `npm ci --include=dev && npx convex deploy --cmd 'npm run build'`
 3. Publish directory: `dist`
-4. Add env variable: `CONVEX_DEPLOY_KEY` (from Convex Dashboard)
+4. Add env variables:
+   - `CONVEX_DEPLOY_KEY` (from Convex Dashboard > Project Settings > Deploy Key)
+   - `VITE_CONVEX_URL` (your production Convex URL, e.g., `https://your-deployment.convex.cloud`)
 
-The build automatically sets `VITE_CONVEX_URL` from the deploy key.
+Both are required: deploy key for builds, URL for edge function runtime.
 
 ### Convex production
 

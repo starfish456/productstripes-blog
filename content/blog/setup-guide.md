@@ -12,6 +12,8 @@ readTime: "8 min read"
 
 This guide walks you through forking [this markdown site](https://github.com/waynesutton/markdown-site), setting up your Convex backend, and deploying to Netlify. The entire process takes about 10 minutes.
 
+**How publishing works:** Once deployed, you write posts in markdown, run `npm run sync`, and they appear on your live site immediately. No rebuild or redeploy needed. Convex handles real-time data sync, so all connected browsers update automatically.
+
 ## Table of Contents
 
 - [Fork and Deploy Your Own Markdown Blog](#fork-and-deploy-your-own-markdown-blog)
@@ -208,9 +210,10 @@ npm run deploy
    - Publish directory: `dist`
 5. Add environment variables:
    - `CONVEX_DEPLOY_KEY`: Generate from [Convex Dashboard](https://dashboard.convex.dev) > Project Settings > Deploy Key
+   - `VITE_CONVEX_URL`: Your production Convex URL (e.g., `https://your-deployment.convex.cloud`)
 6. Click "Deploy site"
 
-The `CONVEX_DEPLOY_KEY` allows Netlify to automatically deploy your Convex functions and set the correct `VITE_CONVEX_URL` on each build.
+The `CONVEX_DEPLOY_KEY` deploys functions at build time. The `VITE_CONVEX_URL` is required for edge functions to proxy RSS, sitemap, and API requests at runtime.
 
 ### Netlify Build Configuration
 

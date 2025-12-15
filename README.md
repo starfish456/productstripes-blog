@@ -2,6 +2,8 @@
 
 A minimalist markdown site built with React, Convex, and Vite. Optimized for SEO, AI agents, and LLM discovery.
 
+**How publishing works:** Write posts in markdown, run `npm run sync`, and they appear on your live site immediately. No rebuild or redeploy needed. Convex handles real-time data sync, so all connected browsers update automatically.
+
 ## Features
 
 - Markdown-based blog posts with frontmatter
@@ -196,14 +198,17 @@ For detailed setup, see the [Convex Netlify Deployment Guide](https://docs.conve
 npx convex deploy
 ```
 
+Note the production URL (e.g., `https://your-deployment.convex.cloud`).
+
 2. Connect your repository to Netlify
 3. Configure build settings:
    - Build command: `npm ci --include=dev && npx convex deploy --cmd 'npm run build'`
    - Publish directory: `dist`
-4. Add environment variable:
+4. Add environment variables in Netlify dashboard:
    - `CONVEX_DEPLOY_KEY` - Generate from [Convex Dashboard](https://dashboard.convex.dev) > Project Settings > Deploy Key
+   - `VITE_CONVEX_URL` - Your production Convex URL (e.g., `https://your-deployment.convex.cloud`)
 
-The `CONVEX_DEPLOY_KEY` lets Netlify automatically deploy functions and set `VITE_CONVEX_URL` on each build. Edge functions dynamically proxy RSS, sitemap, and API requests to your Convex HTTP endpoints.
+The `CONVEX_DEPLOY_KEY` deploys functions at build time. The `VITE_CONVEX_URL` is required for edge functions (RSS, sitemap, API) to proxy requests at runtime.
 
 **Build issues?** Netlify sets `NODE_ENV=production` which skips devDependencies. The `--include=dev` flag fixes this. See [netlify-deploy-fix.md](./netlify-deploy-fix.md) for detailed troubleshooting.
 

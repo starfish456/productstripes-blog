@@ -9,9 +9,10 @@ export default async function handler(
     Deno.env.get("VITE_CONVEX_URL") || Deno.env.get("CONVEX_URL");
 
   if (!convexUrl) {
-    return new Response("Configuration error: Missing Convex URL", {
-      status: 500,
-    });
+    return new Response(
+      "Configuration error: VITE_CONVEX_URL not set. Add it to Netlify environment variables.",
+      { status: 500, headers: { "Content-Type": "text/plain" } },
+    );
   }
 
   // Construct the Convex site URL for the HTTP endpoint

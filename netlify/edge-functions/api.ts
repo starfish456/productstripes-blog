@@ -10,11 +10,11 @@ export default async function handler(
 
   if (!convexUrl) {
     return new Response(
-      JSON.stringify({ error: "Configuration error: Missing Convex URL" }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
-      },
+      JSON.stringify({
+        error:
+          "VITE_CONVEX_URL not set. Add it to Netlify environment variables.",
+      }),
+      { status: 500, headers: { "Content-Type": "application/json" } },
     );
   }
 

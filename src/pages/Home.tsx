@@ -22,7 +22,7 @@ const siteConfig = {
       , customize it, ship it.
     </>
   ),
-  bio: `Write in markdown, sync to a real-time database, and deploy in minutes. Built with React, TypeScript, and Convex for instant updates without rebuilds.`,
+  bio: `Write in markdown, sync to a real-time database, and deploy in minutes. Every time you sync new posts, they appear immediately without redeploying. Built with React, TypeScript, and Convex for instant updates.`,
   featuredEssays: [
     { title: "Setup Guide", slug: "setup-guide" },
     { title: "How to Publish", slug: "how-to-publish" },
