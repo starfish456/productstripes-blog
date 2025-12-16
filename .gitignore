@@ -30,3 +30,9 @@ dist-ssr
 
 # Cursor rules
 .cursor/rules/write.mdc
+
+# LLM files
+CLAUDE.md
+
+# Vercel
+.vercel

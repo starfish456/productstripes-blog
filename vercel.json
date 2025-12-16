@@ -1,0 +1,15 @@
+{
+  "buildCommand": "npm ci --include=dev && npx convex deploy --cmd 'npm run build'",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "env": {
+    "VITE_CONVEX_URL": "@vite-convex-url",
+    "CONVEX_DEPLOY_KEY": "@convex-deploy-key"
+  },
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "/api/proxy"
+    }
+  ]
+}
