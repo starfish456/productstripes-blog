@@ -1,10 +1,8 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
-
 export const config = {
   runtime: 'edge',
 };
 
-export default async function handler(req: VercelRequest) {
+export default async function handler() {
   const convexUrl = process.env.VITE_CONVEX_URL;
 
   if (!convexUrl) {

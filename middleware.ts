@@ -1,5 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
-
 // List of known social media and search engine bots
 const BOTS = [
   'facebookexternalhit',
@@ -32,7 +30,7 @@ function isBot(userAgent: string | null): boolean {
   return BOTS.some((bot) => ua.includes(bot));
 }
 
-export async function middleware(request: NextRequest) {
+export default async function middleware(request: Request) {
   const url = new URL(request.url);
   const userAgent = request.headers.get('user-agent');
 
@@ -44,14 +42,14 @@ export async function middleware(request: NextRequest) {
     pathParts.length === 0 ||
     pathParts[0].includes('.') ||
     pathParts[0] === 'api' ||
-    pathParts[0] === '_next'
+    pathParts[0] === 'images'
   ) {
-    return NextResponse.next();
+    return;
   }
 
   // If not a bot, continue to the SPA
   if (!isBot(userAgent)) {
-    return NextResponse.next();
+    return;
   }
 
   // For bots, fetch the Open Graph metadata from Convex
@@ -59,7 +57,7 @@ export async function middleware(request: NextRequest) {
   const convexUrl = process.env.VITE_CONVEX_URL;
 
   if (!convexUrl) {
-    return NextResponse.next();
+    return;
   }
 
   try {
@@ -75,7 +73,7 @@ export async function middleware(request: NextRequest) {
 
     if (response.ok) {
       const html = await response.text();
-      return new NextResponse(html, {
+      return new Response(html, {
         headers: {
           'Content-Type': 'text/html; charset=utf-8',
           'Cache-Control': 'public, max-age=60, s-maxage=300',
@@ -84,9 +82,9 @@ export async function middleware(request: NextRequest) {
     }
 
     // If meta endpoint fails, fall back to SPA
-    return NextResponse.next();
+    return;
   } catch {
-    return NextResponse.next();
+    return;
   }
 }
 
@@ -95,11 +93,9 @@ export const config = {
     /*
      * Match all request paths except for the ones starting with:
      * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - Files with extensions (images, xml, txt, etc.)
+     * - static files (with extensions)
+     * - images directory
      */
-    '/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)',
+    '/((?!api|images|.*\\..*).*)',
   ],
 };

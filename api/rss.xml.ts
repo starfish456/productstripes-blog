@@ -1,10 +1,8 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
-
 export const config = {
   runtime: 'edge',
 };
 
-export default async function handler(req: VercelRequest) {
+export default async function handler(req: Request) {
   const convexUrl = process.env.VITE_CONVEX_URL;
 
   if (!convexUrl) {
@@ -16,7 +14,7 @@ export default async function handler(req: VercelRequest) {
 
   // Construct the Convex site URL for the HTTP endpoint
   const convexSiteUrl = convexUrl.replace('.cloud', '.site');
-  const url = new URL(req.url!);
+  const url = new URL(req.url);
   const targetUrl = `${convexSiteUrl}${url.pathname}`;
 
   try {
