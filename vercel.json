@@ -2,10 +2,13 @@
   "buildCommand": "npm ci --include=dev && npx convex deploy --cmd 'npm run build'",
   "outputDirectory": "dist",
   "framework": "vite",
+<<<<<<< Updated upstream
   "env": {
     "VITE_CONVEX_URL": "@vite-convex-url",
     "CONVEX_DEPLOY_KEY": "@convex-deploy-key"
   },
+=======
+>>>>>>> Stashed changes
   "rewrites": [
     {
       "source": "/api/:path*",
