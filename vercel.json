@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm ci --include=dev && npx convex deploy --cmd 'npm run build'",
+  "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
   "rewrites": [

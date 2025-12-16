@@ -17,23 +17,37 @@ This guide explains how to deploy to Vercel as an alternative to Netlify.
 npm i -g vercel
 ```
 
-### 2. Deploy via Vercel Dashboard (Recommended)
+### 2. Deploy Convex First
+
+Before deploying to Vercel, deploy your Convex backend:
+
+```bash
+# Deploy Convex to production
+npx convex deploy
+
+# Sync your content to production
+npm run sync:prod
+```
+
+This creates your production Convex deployment and gives you the production URL.
+
+### 3. Deploy via Vercel Dashboard (Recommended)
 
 1. Go to [vercel.com/new](https://vercel.com/new)
 2. Import your Git repository
 3. Configure the project:
    - **Framework Preset**: Vite
-   - **Build Command**: `npm ci --include=dev && npx convex deploy --cmd 'npm run build'`
+   - **Build Command**: Leave default or use `npm run build`
    - **Output Directory**: `dist`
    - **Install Command**: `npm ci`
 
 4. Add Environment Variables:
    - `VITE_CONVEX_URL`: Your production Convex URL (e.g., `https://xxx.convex.cloud`)
-   - `CONVEX_DEPLOY_KEY`: Your Convex deploy key (from Convex Dashboard → Settings → Deploy Keys)
+   - **Important**: Set this for all environments (Production, Preview, Development)
 
 5. Click "Deploy"
 
-### 3. Deploy via CLI
+### 4. Deploy via CLI
 
 ```bash
 # Login to Vercel
@@ -50,18 +64,17 @@ vercel --prod
 
 Set these in the Vercel Dashboard (Settings → Environment Variables):
 
-| Variable | Value | Required |
-|----------|-------|----------|
-| `VITE_CONVEX_URL` | `https://your-deployment.convex.cloud` | Yes |
-| `CONVEX_DEPLOY_KEY` | From Convex Dashboard | Yes |
+| Variable | Value | Required | Notes |
+|----------|-------|----------|-------|
+| `VITE_CONVEX_URL` | `https://your-deployment.convex.cloud` | Yes | Set for all environments |
 
-### How to Get Your Convex Deploy Key
+**Important**: You only need `VITE_CONVEX_URL`. The `CONVEX_DEPLOY_KEY` is NOT needed for Vercel deployment since Convex is deployed separately.
 
-1. Go to [Convex Dashboard](https://dashboard.convex.dev/)
-2. Select your project
-3. Navigate to Settings → Deploy Keys
-4. Create a new deploy key or copy an existing one
-5. Paste it into Vercel's environment variables
+### How to Get Your Convex URL
+
+1. Run `npx convex deploy` locally
+2. Copy the production URL from the output (e.g., `https://careful-bandicoot-336.convex.cloud`)
+3. Add it to Vercel environment variables for Production, Preview, and Development
 
 ## Architecture
 
