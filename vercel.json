@@ -7,5 +7,12 @@
       "source": "/api/:path*",
       "destination": "/api/proxy"
     }
+  ],
+  "routes": [
+    {
+      "src": "/[^.]+",
+      "dest": "/",
+      "status": 200
+    }
   ]
 }

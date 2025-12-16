@@ -34,7 +34,7 @@ export default async function middleware(request: Request) {
   const url = new URL(request.url);
   const userAgent = request.headers.get('user-agent');
 
-  // Only intercept post pages for bots
+  // Only intercept post/page paths for bots
   const pathParts = url.pathname.split('/').filter(Boolean);
 
   // Skip if it's the home page, static assets, or API routes
@@ -42,7 +42,8 @@ export default async function middleware(request: Request) {
     pathParts.length === 0 ||
     pathParts[0].includes('.') ||
     pathParts[0] === 'api' ||
-    pathParts[0] === 'images'
+    pathParts[0] === 'images' ||
+    pathParts[0] === 'stats'
   ) {
     return;
   }
@@ -52,7 +53,7 @@ export default async function middleware(request: Request) {
     return;
   }
 
-  // For bots, fetch the Open Graph metadata from Convex
+  // For bots, try to fetch the Open Graph metadata from Convex
   const slug = pathParts[0];
   const convexUrl = process.env.VITE_CONVEX_URL;
 
@@ -63,8 +64,9 @@ export default async function middleware(request: Request) {
   try {
     // Construct the Convex site URL for the HTTP endpoint
     const convexSiteUrl = convexUrl.replace('.cloud', '.site');
-    const metaUrl = `${convexSiteUrl}/meta/post?slug=${encodeURIComponent(slug)}`;
 
+    // Try to fetch as a blog post first
+    const metaUrl = `${convexSiteUrl}/meta/post?slug=${encodeURIComponent(slug)}`;
     const response = await fetch(metaUrl, {
       headers: {
         Accept: 'text/html',
@@ -81,9 +83,11 @@ export default async function middleware(request: Request) {
       });
     }
 
-    // If meta endpoint fails, fall back to SPA
+    // If not found as a post, it might be a page - let the SPA handle it
+    // The SPA will properly handle pages client-side
     return;
   } catch {
+    // On error, fall back to SPA
     return;
   }
 }
